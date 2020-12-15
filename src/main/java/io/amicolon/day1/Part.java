@@ -48,33 +48,14 @@ public enum Part
                 .orElse(null);
     }
 
-    private static NumberContainer getNumberTripleWhichSumTo2020(Set<? extends Integer> numbers)
+    private static NumberContainer getNumberTripleWhichSumTo2020(Set<? extends Integer> firstAddends)
     {
-        for (Integer firstAddend : numbers)
+        for (Integer firstAddend : firstAddends)
         {
-            Set<Integer> otherNumbers = numbers.stream().filter(num -> !num.equals(firstAddend)).collect(toSet());
-            NavigableSet<Integer> otherNumbersReversed = otherNumbers.stream().sorted(comparingInt(Integer::intValue).reversed()).collect(toCollection(TreeSet::new));
+            Set<Integer> secondAddends = firstAddends.stream().filter(num -> !num.equals(firstAddend)).collect(toSet());
+            NavigableSet<Integer> thirdAddends = secondAddends.stream().sorted(comparingInt(Integer::intValue).reversed()).collect(toCollection(TreeSet::new));
 
-            Stream.Builder<Stream<NumberPair>> streamBuilder = Stream.builder();
-
-            for (Integer secondAddend : otherNumbers)
-            {
-                otherNumbersReversed.pollLast();
-                Stream.Builder<NumberPair> numberPairStreamBuilder = Stream.builder();
-
-                for (Integer thirdAddend : otherNumbersReversed)
-                {
-                    if (secondAddend + thirdAddend < 2020)
-                    {
-                        numberPairStreamBuilder.add(new NumberPair(secondAddend, thirdAddend));
-                    }
-                }
-
-                Stream<NumberPair> numberPairs = numberPairStreamBuilder.build();
-                streamBuilder.add(numberPairs);
-            }
-
-            Stream<NumberPair> numberPairStream = streamBuilder.build().flatMap(Function.identity());
+            Stream<NumberPair> numberPairStream = getNumberPairStream(secondAddends, thirdAddends);
 
             NumberContainer numberContainer = numberPairStream
                     .filter(numberPair -> numberPair.sum() + firstAddend == 2020)
@@ -88,7 +69,31 @@ public enum Part
             }
         }
 
-        return null;
+        throw new IllegalStateException("Couldn't find any 3 numbers which sum up to 2020");
+    }
+
+    private static Stream<NumberPair> getNumberPairStream(Set<Integer> secondAddends, NavigableSet<Integer> thirdAddends)
+    {
+        Stream.Builder<Stream<NumberPair>> streamBuilder = Stream.builder();
+
+        for (Integer secondAddend : secondAddends)
+        {
+            thirdAddends.pollLast();
+            Stream.Builder<NumberPair> numberPairStreamBuilder = Stream.builder();
+
+            for (Integer thirdAddend : thirdAddends)
+            {
+                if (secondAddend + thirdAddend <= 2020)
+                {
+                    numberPairStreamBuilder.add(new NumberPair(secondAddend, thirdAddend));
+                }
+            }
+
+            Stream<NumberPair> numberPairs = numberPairStreamBuilder.build();
+            streamBuilder.add(numberPairs);
+        }
+
+        return streamBuilder.build().flatMap(Function.identity());
     }
 
 }

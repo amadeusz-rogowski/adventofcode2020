@@ -9,13 +9,13 @@ import java.net.URISyntaxException;
 import static io.amicolon.day1.Part.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ReportRepairPartATest
+class ReportRepairTest
 {
     private final ReportRepair reportRepair = new ReportRepair();
 
     @Test
     @DisplayName("Should find numbers which sum to 2020 and then calculate their product")
-    void shouldGenerateReportForProvidedData() throws IOException, URISyntaxException
+    void shouldGenerateReportAForProvidedData() throws IOException, URISyntaxException
     {
         final String fileName = "entries.txt";
 
@@ -25,13 +25,23 @@ class ReportRepairPartATest
     }
 
     @Test
-    void shouldGenerateReportForTDDData() throws IOException, URISyntaxException
+    void shouldGenerateReportAForTDDData() throws IOException, URISyntaxException
     {
         final String fileName = "test.txt";
 
         var result = reportRepair.generateReport(fileName, PART_1);
 
         assertEquals(514_579, result);
+    }
+
+    @Test
+    void shouldGenerateReportBForProvidedData() throws IOException, URISyntaxException
+    {
+        final String fileName = "entries.txt";
+
+        var result = reportRepair.generateReport(fileName, PART_2);
+
+        assertEquals(84_035_952, result);
     }
 
     @Test
