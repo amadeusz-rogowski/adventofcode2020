@@ -1,4 +1,4 @@
-package day1;
+package io.amicolon.day1;
 
 final class NumberPair {
 

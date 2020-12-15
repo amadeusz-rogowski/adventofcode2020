@@ -1,4 +1,4 @@
-package day1;
+package io.amicolon.day1;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

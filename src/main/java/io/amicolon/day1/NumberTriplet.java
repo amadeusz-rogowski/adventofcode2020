@@ -1,4 +1,4 @@
-package day1;
+package io.amicolon.day1;
 
 public class NumberTriplet {
 
