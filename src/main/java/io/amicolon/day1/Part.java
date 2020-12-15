@@ -59,7 +59,7 @@ public enum Part
 
             NumberContainer numberContainer = numberPairStream
                     .filter(numberPair -> numberPair.sum() + firstAddend == 2020)
-                    .map(numberPair -> NumberTriplet.newNumberTriplet(firstAddend, numberPair))
+                    .map(numberPair -> new NumberTriplet(firstAddend, numberPair))
                     .findAny()
                     .orElse(null);
 

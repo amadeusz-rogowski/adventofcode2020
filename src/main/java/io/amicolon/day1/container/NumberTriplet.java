@@ -13,8 +13,11 @@ public final class NumberTriplet implements NumberContainer
         this.thirdNumber = thirdNumber;
     }
 
-    public static NumberContainer newNumberTriplet(Integer thirdNumber, NumberPair numberPair) {
-        return new NumberTriplet(numberPair.getFirstNumber(), numberPair.getSecondNumber(), thirdNumber);
+    public NumberTriplet(Integer thirdNumber, NumberPair numberPair)
+    {
+        this.firstNumber = numberPair.getFirstNumber();
+        this.secondNumber = numberPair.getSecondNumber();
+        this.thirdNumber = thirdNumber;
     }
 
     public int product()
