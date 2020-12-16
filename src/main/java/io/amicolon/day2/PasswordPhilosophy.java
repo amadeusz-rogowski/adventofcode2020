@@ -12,16 +12,16 @@ import static java.util.stream.Collectors.toList;
 
 public class PasswordPhilosophy
 {
-    public long countValidPasswords(String fileName) throws IOException, URISyntaxException
+    public long countValidPasswords(String fileName, Part part) throws IOException, URISyntaxException
     {
         final List<String> passwordPolicies = retrievePasswordPolicies(fileName);
 
-        final Pattern pattern = Pattern.compile("^(?<minOccurences>\\d+)-(?<maxOccurences>\\d+) (?<symbol>[a-z]): (?<password>[a-z]+)$");
+        final Pattern pattern = Pattern.compile("^(?<firstDigit>\\d+)-(?<secondDigit>\\d+) (?<symbol>[a-z]): (?<password>[a-z]+)$");
 
         return passwordPolicies.stream()
                 .filter(policy -> pattern.matcher(policy).matches())
                 .map(policy -> new PasswordWithPasswordPolicy(pattern.matcher(policy)))
-                .filter(PasswordWithPasswordPolicy::isPasswordValid)
+                .filter(password -> part.getStrategy().test(password))
                 .count();
     }
 

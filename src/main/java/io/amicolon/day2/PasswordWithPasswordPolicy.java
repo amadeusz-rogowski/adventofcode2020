@@ -5,8 +5,8 @@ import java.util.regex.Matcher;
 
 public final class PasswordWithPasswordPolicy
 {
-    private final int symbolMinOccurances;
-    private final int symbolMaxOccurances;
+    private final int firstDigit;
+    private final int secondDigit;
     private final String symbol;
     private final String password;
 
@@ -14,18 +14,40 @@ public final class PasswordWithPasswordPolicy
     {
         matcher.find();
 
-        this.symbolMinOccurances = Integer.parseInt(matcher.group("minOccurences"));
-        this.symbolMaxOccurances = Integer.parseInt(matcher.group("maxOccurences"));
+        this.firstDigit = Integer.parseInt(matcher.group("firstDigit"));
+        this.secondDigit = Integer.parseInt(matcher.group("secondDigit"));
         this.symbol = matcher.group("symbol");
         this.password = matcher.group("password");
     }
 
-    public boolean isPasswordValid()
+    public boolean isPasswordValidA()
     {
         long count = Arrays.stream(password.split(""))
                 .filter(character -> character.equals(symbol))
                 .count();
 
-        return count >= symbolMinOccurances && count <= symbolMaxOccurances;
+        return count >= firstDigit && count <= secondDigit;
+    }
+
+    public boolean isPasswordValidB()
+    {
+        final char symbol = this.symbol.charAt(0);
+
+        boolean firstSymbolMatches = isSymbolInPasswordOnPosition(symbol, firstDigit);
+        boolean secondSymbolMatches = isSymbolInPasswordOnPosition(symbol, secondDigit);
+
+        if (firstSymbolMatches)
+        {
+            return !secondSymbolMatches;
+        }
+        else
+        {
+            return secondSymbolMatches;
+        }
+    }
+
+    private boolean isSymbolInPasswordOnPosition(char symbol, int firstDigit)
+    {
+        return password.charAt(firstDigit - 1) == symbol;
     }
 }
