@@ -36,14 +36,7 @@ public final class PasswordWithPasswordPolicy
         boolean firstSymbolMatches = isSymbolInPasswordOnPosition(symbol, firstDigit);
         boolean secondSymbolMatches = isSymbolInPasswordOnPosition(symbol, secondDigit);
 
-        if (firstSymbolMatches)
-        {
-            return !secondSymbolMatches;
-        }
-        else
-        {
-            return secondSymbolMatches;
-        }
+        return firstSymbolMatches != secondSymbolMatches;
     }
 
     private boolean isSymbolInPasswordOnPosition(char symbol, int firstDigit)
